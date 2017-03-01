@@ -22,8 +22,11 @@
     "koa-static": "^2.0.0",
     "koa-view": "^2.0.0",
     "koa-views": "^5.0.1",
+    "node-schedule": "^1.2.0",
     "nunjucks": "^3.0.0",
-    "runkoa": "^1.3.1"
+    "runkoa": "^1.3.1",
+    "sm-mysql": "^1.0.1",
+    "superagent": "^3.5.0"
   },
   "devDependencies": {
     "nodemon": "^1.8.1"
