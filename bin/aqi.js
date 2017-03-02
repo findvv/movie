@@ -3,7 +3,7 @@ var superagent = require('superagent'),
     schedule = require('node-schedule'),
     SMysql = require('sm-mysql'),
     db = require('../db.js'),
-    sMysql = new SMysql(db),
+    sMysql = new SMysql(db,'weather'),
     co = require('co'),
     appKey = '22782',
     sign = 'b33e6e038ff1d39d3adf6ffb2d710840',
@@ -33,7 +33,7 @@ co(getAqis).then(function(){
       var date = new Date(),
           time = (date.getMonth() + 1) + '.' + (date.getDate());
           
-      sMysql.add('aqi',{'time':time,'beijing':aqis[0],'hangzhou':aqis[1]}).end(function(data){
+      sMysql.insert('aqi',{'time':time,'beijing':aqis[0],'hangzhou':aqis[1]}).end(function(data){
         console.log(data[0])
       })
       aqis = [];
