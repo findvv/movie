@@ -10,6 +10,7 @@ const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
 const index = require('./routes/index');
 const weather = require('./routes/weather');
+const tieba = require('./routes/tieba');
 const users = require('./routes/users');
 // middlewares
 app.use(convert(bodyparser));
@@ -30,6 +31,7 @@ app.use(async (ctx, next) => {
 
 router.use('/', index.routes(), index.allowedMethods());
 router.use('/weather', weather.routes(), index.allowedMethods());
+router.use('/tieba', tieba.routes(), index.allowedMethods());
 router.use('/users', users.routes(), users.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
