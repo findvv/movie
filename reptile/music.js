@@ -1,10 +1,10 @@
 var webPage = require('webpage');
 var page = webPage.create();
 var fs = require('fs');
-var num = 59867;
+var num = 63487;
 var allNum = 59867;
 var num2 = 0;
-var thisPage = 1;
+var thisPage = 182;
 var over = 389860;
 var arr = [];
 var newArr = [];
@@ -13,38 +13,48 @@ var comments = [];
 function getEveryUrl2() {
     var time = (Math.random() + 0.5) * 500;
     setTimeout(function(){
-        page.open(newArr[num2].url,"POST",newArr[num2].data, function() {
+        if (newArr.length == 0) {
+            arr = [];
+            newArr = [];
+            thisPage += 1;
+            num2 = 0;
+            comments = [];
+            titles = [];
+            getEveryUrl();
+        } else {
+            page.open(newArr[num2].url,"POST",newArr[num2].data, function() {
             
-            var total = page.evaluate(function() {
-                return JSON.parse(document.body.innerHTML).total;
+                var total = page.evaluate(function() {
+                    return JSON.parse(document.body.innerHTML).total;
+                });
+                comments.push({
+                    total: total,
+                    title: newArr[num2].title,
+                    url: newArr[num2].oriUrl
+                });
+                console.log(num2);
+                num2 += 1;
+                if (num2 < newArr.length) {
+                    getEveryUrl2();
+                } else if(num < over){
+                    var file = fs.open("../result/" + thisPage + ".txt", 'a');
+                    file.write(JSON.stringify(comments));
+                    file.close();
+                    setTimeout(function () {
+                        console.log('ok');
+                        arr = [];
+                        newArr = [];
+                        thisPage += 1;
+                        num2 = 0;
+                        comments = [];
+                        titles = [];
+                        getEveryUrl();
+                    }, 2000);
+                } else {
+                    phantom.exit();
+                }
             });
-            comments.push({
-                total: total,
-                title: newArr[num2].title,
-                url: newArr[num2].oriUrl
-            });
-            console.log(num2);
-            num2 += 1;
-            if (num2 < newArr.length - 1) {
-                getEveryUrl2();
-            } else if(num < over){
-                var file = fs.open("../result/" + thisPage + ".txt", 'a');
-                file.write(JSON.stringify(comments));
-                file.close();
-                setTimeout(function () {
-                    console.log('ok');
-                    arr = [];
-                    newArr = [];
-                    thisPage += 1;
-                    num2 = 0;
-                    comments = [];
-                    titles = [];
-                    getEveryUrl();
-                }, 2000);
-            } else {
-                phantom.exit();
-            }
-        });
+        }
     }, time);
 }
 
@@ -63,7 +73,7 @@ function getEveryUrl() {
                 });
             }
             num += 1;
-            if (num < allNum + thisPage * 10) {
+            if (num < allNum + thisPage * 20) {
                 getEveryUrl();
             } else {
                 for(var i = 0; i < titles.length; i++) {
@@ -73,13 +83,15 @@ function getEveryUrl() {
                 for(var i = 0; i < titles.length; i++) {
                     newArr[i] = arr[i]
                 }
-                getEveryUrl2();
+                setTimeout(function(){
+                    getEveryUrl2();
+                }, 400);
             }
         });
     }, time);
 }
 page.onResourceRequested = function(requestData, networkRequest) {
-    if(requestData.url.indexOf('comments') !== -1){
+    if(requestData.url && requestData.url.indexOf('comments') !== -1){
         var url = requestData.url,
             data = requestData.postData;
 
