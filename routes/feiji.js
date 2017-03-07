@@ -11,7 +11,7 @@ function newPromise(table){
     });
 }
 router.get('/api', async function (ctx, next) {
-  var data = await newPromise();
+  var data = await newPromise('qunaer');
   ctx.body = {
     data: data
   };
@@ -19,13 +19,15 @@ router.get('/api', async function (ctx, next) {
 router.get('/', async function (ctx, next) {
   var data = await newPromise('qunaer');
   await ctx.render('feiji',{
-    data: data
+    data: data,
+    txt: '2017-04-02'
   });
 });
 router.get('/2', async function (ctx, next) {
   var data = await newPromise('qunaer2');
   await ctx.render('feiji',{
-    data: data
+    data: data,
+    txt: '2017-04-01'
   });
 });
 module.exports = router;

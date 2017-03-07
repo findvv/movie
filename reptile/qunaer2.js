@@ -24,7 +24,6 @@ function getCity(city,num) {
                 'sort':'5'
             })
             .end(function(err,res){
-                console.log((num / cityList.length).toFixed(4) * 100 + '%');
                 if (!JSON.parse(res.text).data) {
                     resolve();
                 } else {
