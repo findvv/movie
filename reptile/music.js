@@ -1,10 +1,10 @@
 var webPage = require('webpage');
 var page = webPage.create();
 var fs = require('fs');
-var num = 63487;
+var num = 59867;
 var allNum = 59867;
 var num2 = 0;
-var thisPage = 182;
+var thisPage = 1;
 var over = 389860;
 var arr = [];
 var newArr = [];
@@ -41,7 +41,7 @@ function getEveryUrl2() {
                     file.write(JSON.stringify(comments));
                     file.close();
                     setTimeout(function () {
-                        console.log('ok');
+                        console.log(thisPage);
                         arr = [];
                         newArr = [];
                         thisPage += 1;
