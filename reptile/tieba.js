@@ -2,13 +2,14 @@
 var co = require('co');
 var superagent = require('superagent');
 var cheerio = require('cheerio');
-var db = require('../db.js');
+var db = require('../db2.js');
 var SMysql = require('sm-mysql');
 var getSortFun = SMysql.sort;
 var keyWord = '李毅';
 var lock = false;
 var arr = [];
 var num = 0;
+var allPage = 3000;
 var trim = function(str){
     var trimLeft = /^\s+/,
         trimRight = /\s+$/,
@@ -51,7 +52,7 @@ function to() {
                 .set("Cookie",'TIEBA_USERTYPE=e1100a0dab23683912b25537; bdshare_firstime=1483696532166; BAIDUID=E3BC09AA9C79F0440C4B3A9A53290A9B:FG=1; PSTM=1487065321; BIDUPSID=EFD474BAF1B15083C011AEF52331535D; BAIDUCUID=++; IS_NEW_USER=6a1d9b62231ce359ce22e374; TIEBAUID=c57bab2ca9e9741802f2cbff; BDUSS=9YQTI5ZXFtVGUtWk5LNU1GN2NYb0dLMTlvandUM1hSLUpvM0hVQ041bVYzOXhZSUFBQUFBJCQAAAAAAAAAAAEAAACB4vMm0KHN5tTasbG-qQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAJVStViVUrVYSk; H_WISE_SIDS=106303_100183_114144_113884_114746_107851_114699_114702_114001_107918_112106_107315_112134_114125_114098_114843_114798_114513_114329_114535_114313_114275_114717_114076_110085_114571; BDSFRCVID=uLKsJeC62GmPPeRiRADOwNx2oW6MhI7TH6aonq1azoh6L6k4opnoEG0PJf8g0Ku-dWitogKK0mOTHUvP; H_BDCLCKID_SF=fRKJoD_MtKvDj6rl-DTMbt00qxbXqM53W67Z0l8KttnWMJ3N04rCylDQ5PTOJt4HW23m_MjmWIQHDI5-b6r-b6jXWqOaXf53WKn4KKJx5tPWeIJo5DcfLfrDhUJiB5OLBan7-4QxfD0WMDLmD5L35bD_-UR-bD6LK6r0WtOEHJOoDDklD5O5y4LdjG5N-RTT3bv0bqc42-3FJKovDR--LfIw3-Aq54RT5GAOLIoNtt5JMx3RBUA-QfbQ0-6PqP-jW5IL24ogfR7JOpkxhfnxyhLB0aCDJ5kDtRueVbOsa-5fKRopMtOhq4tehHRrqUneWDTm_D_KMUQ18RrY0x6C2R-N2a5yJJtq0mQN-pPKKR7vhx7IM-60bnFO2MjjKKrz3mkjbPjzfn02OPKz0TKWQ44syP4j2xRnWNTqbIF-tKDKhItGjjRjq6oBDprt2D62aKDsWPTc-hcqEIL4hhQs5bLwMJ5Z2TvfBj-HWKobJqjkVxbSj4QoMTkjjPjQtMntyH7ZafTL2p5nhMJlXj7JDMP0-xQg5f3y523ion6vQpnlfxtuDjAhDTjBDG8s-bbfHj60WJ3Jan7he5rnhPF3hT83KP6-35KHaTFOXqr82xoNExn6XRAKhTDUDGblth37JD6yKJoz0DnYJbbaDRbkQtoQyPoxJpODBRbMopvaKJ7ZOt3vbURvD-ug3-7P-q8EJbADoDD-JCvbfP0kKtr_MJQH-UnLqMjX257Z0l8KtD0KqC_Gh4rCLDu35PTOJtRitjcW-b7mWIQHDPjaLPo-5noyja0eBlTH2mn4KKJx5fKWeIJo5DcvMq5XhUJiB5OLBan7-4QxfDIWhKK6DTu3K-FbbfkXKR5--DTeLPbHKbP_DR5menodyntpbt-qJfbLLNR-bJT40lbcfpr9D4nRjxuJyHJnBT5KaKoDoRjLabP-8KQcj-n2h44kQN3TBtKO5bRiL66eQbTMDn3oyT3VXp0n3qjTqtJHKbDD_D-XfxK; STOKEN=3b82f42acf51f9984d27aa8c70a29973f1a2b067d1ddfb230753ff29854df109; wise_device=0; MCITY=-131%3A; locale=zh; bottleBubble=1; PSINO=2; H_PS_PSSID=22084_1455_21111_17001_21263_22035_20719')
                 .end((err,res)=>{
                     var $ = cheerio.load(res.text);
-                    if ((num / 50 > 1000) || $('.j_thread_list').length == 0) {
+                    if ((num / 50 > allPage) || $('.j_thread_list').length == 0) {
                         lock = true;
                         resolve(); 
                     } else {

@@ -1,11 +1,11 @@
 var router = require('koa-router')(),
     SMysql = require('sm-mysql'),
-    db = require('../db.js');
+    db = require('../db2.js');
 
 function newPromise(){
     return new Promise(function(resolve, reject){
         var sMysql = new SMysql(db,'tieba');
-        sMysql.order('李毅','num').end(function(data){
+        sMysql.order('李毅','*','num','DESC','0,50').end(function(data){
             resolve(data[0]);
         });
     });
@@ -17,6 +17,9 @@ router.get('/api', async function (ctx, next) {
   };
 })
 router.get('/', async function (ctx, next) {
-  await ctx.render('tieba');
+  var data = await newPromise();
+  await ctx.render('tieba',{
+    data: data
+  });
 })
 module.exports = router;
