@@ -18,12 +18,13 @@ function getCity(city,num) {
             .send({
                 'depCity':'北京',
                 'arrCity':city,
-                'goDate':'2017-04-02',
+                'goDate':'2017-04-01',
                 'firstRequest':'true',
                 'startNum':'0',
                 'sort':'5'
             })
             .end(function(err,res){
+                console.log((num / cityList.length).toFixed(4) * 100 + '%');
                 if (!JSON.parse(res.text).data) {
                     resolve();
                 } else {
@@ -56,7 +57,7 @@ schedule.scheduleJob(rule, function(){
     var t = new Date();
     co(get).then(function(){
         arr = arr.sort(getSortFun('asc', 'price'));
-        (new SMysql(db,'feiji')).deleteData('qunaer').insert('qunaer',arr).end(function(data){
+        (new SMysql(db,'feiji')).deleteData('qunaer2').insert('qunaer2',arr).end(function(data){
             console.log(t);
         })
     });

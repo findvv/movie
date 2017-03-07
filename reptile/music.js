@@ -1,10 +1,10 @@
 var webPage = require('webpage');
 var page = webPage.create();
 var fs = require('fs');
-var num = 59867;
+var num;
 var allNum = 59867;
 var num2 = 0;
-var thisPage = 1;
+var thisPage;
 var over = 389860;
 var arr = [];
 var newArr = [];
@@ -40,6 +40,11 @@ function getEveryUrl2() {
                     var file = fs.open("../result/" + thisPage + ".txt", 'a');
                     file.write(JSON.stringify(comments));
                     file.close();
+                    setTimeout(function () {
+                        var file3 = fs.open("m.txt", 'w');
+                        file3.write('{"num":' + num + ',"thisPage":' + (thisPage + 1) + '}');
+                        file3.close();
+                    },1000)
                     setTimeout(function () {
                         console.log(thisPage);
                         arr = [];
@@ -101,4 +106,12 @@ page.onResourceRequested = function(requestData, networkRequest) {
         });
     }
 };
-getEveryUrl();
+var file2 = fs.open('m.txt','r');
+var str = file2.read();
+setTimeout(function(){
+    str = JSON.parse(str);
+    num = str.num;
+    thisPage = str.thisPage;
+    getEveryUrl();
+    file2.close();
+}, 1000);
