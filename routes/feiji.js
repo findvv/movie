@@ -1,33 +1,28 @@
 var router = require('koa-router')(),
     SMysql = require('sm-mysql'),
-    db = require('../db.js');
+    db = require('../db2.js');
 
-function newPromise(table){
+function newPromise(){
     return new Promise(function(resolve, reject){
         var sMysql = new SMysql(db,'feiji');
-        sMysql.search(table).end(function(data){
+        sMysql.search('jipiao',{
+          query: '*',                     // 搜索关键词
+          limit: '0,100'
+        }).end(function(data){
             resolve(data[0]);
         });
     });
 }
 router.get('/api', async function (ctx, next) {
-  var data = await newPromise('qunaer');
+  var data = await newPromise();
   ctx.body = {
     data: data
   };
 });
 router.get('/', async function (ctx, next) {
-  var data = await newPromise('qunaer');
+  var data = await newPromise();
   await ctx.render('feiji',{
-    data: data,
-    txt: '2017-04-02'
-  });
-});
-router.get('/2', async function (ctx, next) {
-  var data = await newPromise('qunaer2');
-  await ctx.render('feiji',{
-    data: data,
-    txt: '2017-04-01'
+    data: data
   });
 });
 module.exports = router;

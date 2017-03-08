@@ -17,6 +17,11 @@
         display: flex;
         border-bottom: 1px solid #dee4ee;
     }
+    a {
+        font-size: 14px;
+        color: #000;
+        text-decoration: none;
+    }
     .d2 p,.d3 p {
         -webkit-box-flex: 1;
         -webkit-flex: 1;
@@ -35,22 +40,22 @@
   </style>
   <body>
     <div class="d1">
-        <p>日期：{{ txt }}</p>
-        <p>去哪儿网机票--北京出发（每10分钟更新一次）</p>
+        <p>日期：2017-04-01 -- 2017-04-04</p>
+        <p>去哪儿网机票--北京出发<br />（每10分钟更新一次）</p>
         <div class="d3">
             <p>价格</p>
             <p>目的地</p>
-            <p>时间</p>
-            <p>航班</p>
+            <p>去程时间</p>
+            <p>返程时间</p>
         </div>
         <div>
             {% for f in data %}
-            <div class="d2">
+            <a class="d2" href="{{ f.url }}">
                 <p>{{ f.price }}</p>
                 <p>{{ f.city }}</p>
-                <p>{{ f.time }}</p>
-                <p>{{ f.airCode }}</p>
-            </div>
+                <p>{{ f.gotime }}</p>
+                <p>{{ f.backtime }}</p>
+            </a>
             {% endfor %}
         </div>
     </div>

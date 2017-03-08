@@ -1,4 +1,4 @@
-var db = require('../db.js');
+var db = require('../db2.js');
 var SMysql = require('sm-mysql');
 var fs = require('fs');
 var co = require('co');

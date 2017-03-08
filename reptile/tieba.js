@@ -28,7 +28,7 @@ var step11 = (() => {
                 },
                 'title' : {
                     type: 'VARCHAR',
-                    length: 50,
+                    length: 100,
                     isNull: false
                 },
                 'url' : {
@@ -44,7 +44,7 @@ var step11 = (() => {
 });
 
 function to() {
-    var time = (Math.random() + 0.3) * 1000;
+    var time = (Math.random() + 0.3) * 300;
     return new Promise((resolve,reject) => {
         setTimeout(() => {
             superagent
@@ -71,7 +71,7 @@ function to() {
                                 var title = $(this).text();
                                 arr.push({
                                     'num': Number($this.find('.threadlist_rep_num').text()),
-                                    'title': trim($this.find('.j_th_tit').text()),
+                                    'title': trim($this.find('.j_th_tit').eq(0).text()),
                                     'url': `https://tieba.baidu.com${$this.find('a.j_th_tit').attr('href')}`
                                 });
                             });
