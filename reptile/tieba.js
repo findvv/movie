@@ -99,24 +99,12 @@ var step12 = (() => {
     });
 });
 
-// 1.3 贴吧数据写入数据库
-// var step13 = ((data) => {
-//     return new Promise((resolve,reject) => {
-//         (new SMysql(db,'tieba'))
-//             .order(keyWord, 'num')
-//             .end(function(data) {
-//                 resolve();
-//             });
-//     });
-// });
-
 // 1.获取贴吧数据并且写入数据库
 var step1 = (() => {
     return new Promise((resolve,reject) => {
         co(function*(){
             yield step11();
             yield step12();
-            // yield step13();
         }).then(()=>{
             resolve();
         });
@@ -126,7 +114,6 @@ var step1 = (() => {
 co(function*(){
     console.time(1);
     yield step1();
-    
 }).then(()=>{
     console.timeEnd(1);
     console.log('over');

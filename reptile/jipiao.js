@@ -23,6 +23,7 @@ function getCity(city,num) {
             .get(url)
             .set('User-Agent', 'Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1')
             .end(function(err,res){
+                console.log(res.text);
                 var $ = cheerio.load(res.text);
                 if ($('.list-row').length == 0) {
                     resolve();
