@@ -44,7 +44,7 @@ function getEveryUrl2() {
                         var file3 = fs.open("m.txt", 'w');
                         file3.write('{"num":' + num + ',"thisPage":' + (thisPage + 1) + '}');
                         file3.close();
-                    },1000)
+                    },500)
                     setTimeout(function () {
                         console.log(thisPage);
                         arr = [];
@@ -54,7 +54,7 @@ function getEveryUrl2() {
                         comments = [];
                         titles = [];
                         getEveryUrl();
-                    }, 2000);
+                    }, 1000);
                 } else {
                     phantom.exit();
                 }
@@ -90,7 +90,7 @@ function getEveryUrl() {
                 }
                 setTimeout(function(){
                     getEveryUrl2();
-                }, 400);
+                }, 200);
             }
         });
     }, time);
@@ -114,4 +114,4 @@ setTimeout(function(){
     thisPage = str.thisPage;
     getEveryUrl();
     file2.close();
-}, 1000);
+}, 500);

@@ -3,3 +3,5 @@ db.js
 npm-debug.log
 
 result/
+
+sftp-config.json
