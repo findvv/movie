@@ -8,12 +8,12 @@ const json = require('koa-json');
 const onerror = require('koa-onerror');
 const bodyparser = require('koa-bodyparser')();
 const logger = require('koa-logger');
+
 const index = require('./routes/index');
-const weather = require('./routes/weather');
 const tieba = require('./routes/tieba');
 const feizan = require('./routes/feizan');
 const music = require('./routes/music');
-const users = require('./routes/users');
+const admin = require('./routes/admin');
 // middlewares
 app.use(convert(bodyparser));
 app.use(convert(json()));
@@ -32,10 +32,9 @@ app.use(async (ctx, next) => {
 });
 
 router.use('/', index.routes(), index.allowedMethods());
-router.use('/weather', weather.routes(), weather.allowedMethods());
 router.use('/tieba', tieba.routes(), tieba.allowedMethods());
 router.use('/feizan', feizan.routes(), feizan.allowedMethods());
-router.use('/users', users.routes(), users.allowedMethods());
+router.use('/admin', admin.routes(), admin.allowedMethods());
 router.use('/music', music.routes(), music.allowedMethods());
 
 app.use(router.routes(), router.allowedMethods());
