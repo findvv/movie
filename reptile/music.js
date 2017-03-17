@@ -1,6 +1,7 @@
 var webPage = require('webpage');
 var page = webPage.create();
 var fs = require('fs');
+var SMysql = require('sm-mysql');
 var num;
 var allNum = 59867;
 var num2 = 0;
@@ -32,7 +33,6 @@ function getEveryUrl2() {
                     title: newArr[num2].title,
                     url: newArr[num2].oriUrl
                 });
-                console.log(num2);
                 num2 += 1;
                 if (num2 < newArr.length) {
                     getEveryUrl2();
@@ -46,7 +46,6 @@ function getEveryUrl2() {
                         file3.close();
                     },500)
                     setTimeout(function () {
-                        console.log(thisPage);
                         arr = [];
                         newArr = [];
                         thisPage += 1;
@@ -67,7 +66,6 @@ function getEveryUrl() {
     var time = (Math.random() + 0.5) * 500;
     setTimeout(function(){
         page.open("http://music.163.com/#/song?id=" + num, function() {
-            console.log(num);
             var title = page.evaluate(function() {
                 return document.title;
             });

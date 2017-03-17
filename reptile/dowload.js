@@ -1,9 +1,7 @@
-'use strict';
 var co = require('co');
 var fs = require('fs');
 var SMysql = require('sm-mysql');
 var download = require('download');
-var arr = [];
 var db = {  
           host     : 'zzxzzx2017-zzxzzx2017.v2.tenxapp.com',  
           user     : 'root',  
@@ -20,9 +18,32 @@ function step1(){
         });
     })
 }
+function getImg(title,img,num) {
+    return new Promise((resolve, reject)=>{
+        let newNum = num < 10 ? ('0' + num) : num;
+        console.log(newNum);
+        download(img).then(data => {
+            fs.writeFile(`../manhua/${title}/${newNum}.jpg`, data, function(err){
+                resolve();
+            });
+        });
+    });
+}
 function getData(data) {
     return new Promise((resolve,reject)=>{
-        
+        let imgs = JSON.parse(data.imgs),
+            title = data.title;
+
+        console.log(`正在下载${title}`);
+        fs.mkdir(`../manhua/${title}`,0777, function () {
+            co(function* (){
+                for(var i = 0; i < imgs.length; i++) {
+                    yield getImg(title, imgs[i], i);
+                }
+            }).then(function(){
+                resolve();
+            });
+        });
     })
 }
 function step2(data){
@@ -31,11 +52,13 @@ function step2(data){
             for(let d of data) {
                 yield getData(d);
             }
-        }).then(resolve);
+        }).then(function(){
+            resolve();
+        });
     });
 }
-download('unicorn.com/foo.jpg').pipe(fs.createWriteStream('dist/foo.jpg'));
 function* steps(){
     let data = yield step1();
     yield step2(data);
 }
+co(steps);

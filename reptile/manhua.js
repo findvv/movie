@@ -19,6 +19,7 @@ function step1(){
             .get('http://www.hanhande.com/manhua/op/')
             .charset('gb2312')
             .end((err,res)=>{
+                console.log(err);
                 var $ = cheerio.load(res.text),
                     lis = $('#g1 li');
 
@@ -38,7 +39,6 @@ function step1(){
     });
 }
 function step2(){
-    console.log('开始计算页码');
     function son(i){
         return new Promise((resolve, reject)=>{
             var timeout = (Math.random() + 0.3) * 1000;
@@ -49,10 +49,8 @@ function step2(){
                 .end((err,res)=>{
                     var $ = cheerio.load(res.text),
                         page = $('.mhTit code').text(),
-                        timeout = (Math.random() + 0.3) * 1000,
                         pg = page.match(/\/\d+/g)[0].match(/\d+/)[0];
 
-                    console.log((i / arr.length).toFixed(4) * 100 + '%');
                     arr[i]['page'] = parseInt(pg);
                     resolve();
                 });
@@ -70,7 +68,6 @@ function step2(){
     })
 }
 function step3(urls,pages) {
-    console.log('开始访问每一话');
     function son(num, i) {
         return new Promise((resolve, reject)=>{
             var url = '',timeout = (Math.random() + 0.3) * 1000;
@@ -85,7 +82,6 @@ function step3(urls,pages) {
                 .charset('gb2312')
                 .end((err,res)=>{
                     var $ = cheerio.load(res.text),
-                        timeout = (Math.random() + 0.3) * 1000,
                         src = $('#pictureContent img').attr('src');
 
                     arr[num]['imgs'].push(src);
@@ -96,7 +92,6 @@ function step3(urls,pages) {
     }
     function far(num) {
         arr[num]['imgs'] = [];
-        console.log(`正在下载${arr[num]['title']}`);
         return new Promise((resolve,reject)=>{
             co(function* (){
                 for(let i = 1; i < arr[num]['page'] + 1; i++) {
@@ -112,7 +107,8 @@ function step3(urls,pages) {
     }
     return new Promise((resolve, reject)=>{
         co(function* (){
-            for(let i = 45; i < arr.length; i++) {
+            for(let i = 60; i < arr.length; i++) {
+                console.log(i);
                 yield far(i);
             }
         }).then(function(){
